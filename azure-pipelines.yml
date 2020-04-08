@@ -1,3 +1,4 @@
+name: $(Major).$(Minor).$(Rev:r)
 steps:
 - task: DotNetCoreCLI@2
   displayName: 'Run Build'
@@ -19,3 +20,4 @@ steps:
     publishFeedCredentials: 'Nuget'
     versioningScheme: byBuildNumber
     packagesToPush: '$(System.DefaultWorkingDirectory)/**/*.nupkg;!$(System.DefaultWorkingDirectory)/**/*.symbols.nupkg'
+
