@@ -17,4 +17,5 @@ steps:
     command: 'push'
     nuGetFeedType: 'external'
     publishFeedCredentials: 'Nuget'
+    versioningScheme: byBuildNumber
     packagesToPush: '$(System.DefaultWorkingDirectory)/**/*.nupkg;!$(System.DefaultWorkingDirectory)/**/*.symbols.nupkg'
