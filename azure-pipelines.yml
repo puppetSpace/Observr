@@ -11,13 +11,12 @@ steps:
     command: test
     projects: '**/*Test/*.csproj'
     arguments: '--configuration Release'
+- task: NuGetAuthenticate@0
+  inputs:
+    nuGetServiceConnections: 'Nuget'
+    forceReinstallCredentialProvider: true
 - task: NuGetCommand@2
   displayName: 'Push to Nuget'
   inputs:
     command: 'push'
     packagesToPush: '$(System.DefaultWorkingDirectory)/**/*.nupkg;!$(System.DefaultWorkingDirectory)/**/*.symbols.nupkg'
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-    nuGetFeedType: 'external'
-    publishFeedCredentials: 'Nuget'
