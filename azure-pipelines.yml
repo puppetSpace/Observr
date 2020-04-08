@@ -17,6 +17,7 @@ steps:
   inputs:
     command: pack
     packagesToPack: '**/Observr.csproj'
+    arguments: '--configuration Release'
 - task: NuGetAuthenticate@0
   displayName: 'Nuget authenticate'
   inputs:
