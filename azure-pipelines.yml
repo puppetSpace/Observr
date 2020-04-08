@@ -12,11 +12,12 @@ steps:
     command: test
     projects: '**/*Test/*.csproj'
     arguments: '--configuration Release'
-- task: NuGetCommand@2
+- task: DotNetCoreCLI@2
   inputs:
     command: 'pack'
     packagesToPack: '**/*.csproj;!**/*Test/*.csproj'
     configuration: 'Release'
+    nobuild: true
     versioningScheme: 'byBuildNumber'
 - task: NuGetCommand@2
   displayName: 'Push to Nuget'
