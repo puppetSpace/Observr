@@ -11,19 +11,14 @@ steps:
     command: test
     projects: '**/*Test/*.csproj'
     arguments: '--configuration Release'
-
-- task: DotNetCoreCLI@2
-  displayName: 'Create Nuget'
-  inputs:
-    command: pack
-    packagesToPack: '**/Observr.csproj'
-    arguments: '--configuration Release'
 - task: NuGetAuthenticate@0
   displayName: 'Nuget authenticate'
   inputs:
     nuGetServiceConnections: 'Nuget'
 - task: NuGetCommand@2
-  displayName: 'Nuget push'
+  displayName: 'Push to Nuget'
   inputs:
-    command: push
-
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'external'
+    publishFeedCredentials: 'Nuget'
