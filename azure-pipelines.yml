@@ -13,11 +13,16 @@ steps:
     projects: '**/*Test/*.csproj'
     arguments: '--configuration Release'
 - task: NuGetCommand@2
+  inputs:
+    command: 'pack'
+    packagesToPack: '**/*.csproj'
+    configuration: 'Release'
+    versioningScheme: 'byBuildNumber'
+- task: NuGetCommand@2
   displayName: 'Push to Nuget'
   inputs:
     command: 'push'
     nuGetFeedType: 'external'
     publishFeedCredentials: 'Nuget'
-    versioningScheme: byBuildNumber
-    packagesToPush: '$(System.DefaultWorkingDirectory)/**/*.nupkg;!$(System.DefaultWorkingDirectory)/**/*.symbols.nupkg'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
 
