@@ -1,0 +1,40 @@
+﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace Observr
+{
+	public class Broker : IBroker
+	{
+		private readonly Dictionary<Type, List<IObserver>> _observers = new Dictionary<Type, List<IObserver>>();
+
+		public async Task Publish<TE>(TE value, CancellationToken cancellationToken = default)
+		{
+			if (_observers.ContainsKey(typeof(TE)))
+			{
+				foreach (IObserver<TE> observer in _observers[typeof(TE)])
+					await observer.Handle(value, cancellationToken);
+			}
+		}
+
+		public IDisposable Subscribe<TE>(IObserver<TE> observer)
+		{
+			lock (_observers)
+			{
+				if (_observers.ContainsKey(typeof(TE)) && _observers[typeof(TE)] is object)
+				{
+					if(!_observers[typeof(TE)].Any(x => x.GetType() == observer.GetType()))
+						_observers[typeof(TE)].Add(observer);
+				}
+				else
+					_observers[typeof(TE)] = new List<IObserver> { observer };
+
+			}
+			return new UnSubscriber<TE>(_observers, observer);
+		}
+	}
+}
