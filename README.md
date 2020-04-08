@@ -1,3 +1,5 @@
+[![Build Status](https://sebastianschoof.visualstudio.com/Observr/_apis/build/status/puppetSpace.Observr?branchName=master)](https://sebastianschoof.visualstudio.com/Observr/_build/latest?definitionId=2&branchName=master)
+
 # Observr
 Library that simplifies the use of the Observer pattern. Easily send notifications and subscribe to these notifications.
 
