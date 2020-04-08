@@ -16,5 +16,8 @@ steps:
   inputs:
     command: 'push'
     packagesToPush: '$(System.DefaultWorkingDirectory)/**/*.nupkg;!$(System.DefaultWorkingDirectory)/**/*.symbols.nupkg'
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
     nuGetFeedType: 'external'
     publishFeedCredentials: 'Nuget'
