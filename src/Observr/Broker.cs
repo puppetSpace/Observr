@@ -20,7 +20,7 @@ namespace Observr
 			if (_observers.ContainsKey(typeof(TE)))
 			{
 				foreach (IObserver<TE> observer in _observers[typeof(TE)])
-					await observer.Handle(value, cancellationToken);
+					await observer.Handle(value, cancellationToken).ConfigureAwait(false);
 			}
 		}
 
