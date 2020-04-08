@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Observr
 {
+	/// <summary>
+	/// Is a mediator between the objects doing the notifying and objects receiving the notifications
+	/// </summary>
 	public class Broker : IBroker
 	{
 		private readonly Dictionary<Type, List<IObserver>> _observers = new Dictionary<Type, List<IObserver>>();

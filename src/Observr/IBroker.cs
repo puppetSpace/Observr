@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Observr
 {
+    /// <summary>
+	/// Defines a mediator between the objects doing the notifying and objects receiving the notifications
+	/// </summary>
     public interface IBroker
     {
         IDisposable Subscribe<TE>(IObserver<TE> observer);
