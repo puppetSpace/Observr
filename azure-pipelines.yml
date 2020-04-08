@@ -2,12 +2,27 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: 'Run Build'
   inputs:
-    command: 'build'
+    command: build
     projects: '**/*.csproj'
     arguments: '--configuration Release'
 - task: DotNetCoreCLI@2
   displayName: 'Run Test'
   inputs:
-    command: 'test'
+    command: test
     projects: '**/*Test/*.csproj'
     arguments: '--configuration Release'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Create Nuget'
+  inputs:
+    command: pack
+    packagesToPack: '**/Observr.csproj'
+- task: NuGetAuthenticate@0
+  displayName: 'Nuget authenticate'
+  inputs:
+    nuGetServiceConnections: 'Nuget'
+- task: NuGetCommand@2
+  displayName: 'Nuget push'
+  inputs:
+    command: push
+
