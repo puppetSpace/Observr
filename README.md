@@ -4,6 +4,15 @@
 Library that simplifies the use of the Observer pattern. Easily send notifications and subscribe to these notifications.
 
 A notification can be of any type. A new value that has been created, a simple message, a progress update, ..
+## Install
+via nuget
+```
+Install-Package Observr
+```
+or via dotnet
+```
+dotnet add package Observr
+```
 ## Usage
 You can instantiate the `Broker` class and use this to subscribe to or publish changes. Since this class will hold the references to the subscribers, it is best to only have one instance of this class.
 ```csharp
