@@ -14,10 +14,12 @@ namespace Observr
 	public class Broker : IBroker
 	{
 		private readonly Dictionary<Type, List<IObserver>> _observers = new Dictionary<Type, List<IObserver>>();
+		private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
 		public async Task Publish<TE>(TE value, CancellationToken cancellationToken = default)
 		{
-			lock (_observers)
+			await _semaphore.WaitAsync();
+			try
 			{
 				if (_observers.ContainsKey(typeof(TE)))
 				{
@@ -26,12 +28,15 @@ namespace Observr
 						await observer.Handle(value, cancellationToken).ConfigureAwait(false);
 
 				}
+			} finally{
+				_semaphore.Release();
 			}
 		}
 
 		public IDisposable Subscribe<TE>(IObserver<TE> observer)
 		{
-			lock (_observers)
+			await _semaphore.WaitAsync();
+			try
 			{
 				if (_observers.ContainsKey(typeof(TE)) && _observers[typeof(TE)] is object)
 				{
@@ -40,7 +45,10 @@ namespace Observr
 				else
 					_observers[typeof(TE)] = new List<IObserver> { observer };
 
+			} finally{
+				_semaphore.Release();
 			}
+			
 			return new UnSubscriber<TE>(_observers, observer);
 		}
 	}
