@@ -17,10 +17,15 @@ namespace Observr
 
 		public async Task Publish<TE>(TE value, CancellationToken cancellationToken = default)
 		{
-			if (_observers.ContainsKey(typeof(TE)))
+			lock (_observers)
 			{
-				foreach (IObserver<TE> observer in _observers[typeof(TE)])
-					await observer.Handle(value, cancellationToken).ConfigureAwait(false);
+				if (_observers.ContainsKey(typeof(TE)))
+				{
+				
+					foreach (IObserver<TE> observer in _observers[typeof(TE)])
+						await observer.Handle(value, cancellationToken).ConfigureAwait(false);
+
+				}
 			}
 		}
 
