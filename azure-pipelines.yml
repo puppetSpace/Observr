@@ -7,12 +7,6 @@ steps:
     projects: '**/*.csproj'
     arguments: '--configuration Release'
 - task: DotNetCoreCLI@2
-  displayName: 'Run Test'
-  inputs:
-    command: test
-    projects: '**/*Test/*.csproj'
-    arguments: '--configuration Release'
-- task: DotNetCoreCLI@2
   inputs:
     command: 'pack'
     packagesToPack: '**/*.csproj;!**/*Test/*.csproj'
