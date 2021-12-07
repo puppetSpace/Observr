@@ -35,7 +35,7 @@ namespace Observr
 
 		public IDisposable Subscribe<TE>(IObserver<TE> observer)
 		{
-			await _semaphore.WaitAsync();
+			_semaphore.Wait();
 			try
 			{
 				if (_observers.ContainsKey(typeof(TE)) && _observers[typeof(TE)] is object)
