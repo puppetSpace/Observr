@@ -30,8 +30,7 @@ namespace Observr
 			{
 				if (_observers.ContainsKey(typeof(TE)) && _observers[typeof(TE)] is object)
 				{
-					if(!_observers[typeof(TE)].Any(x => x.GetType() == observer.GetType()))
-						_observers[typeof(TE)].Add(observer);
+					_observers[typeof(TE)].Add(observer);
 				}
 				else
 					_observers[typeof(TE)] = new List<IObserver> { observer };
