@@ -15,10 +15,11 @@ namespace Observr
     {
         private readonly Dictionary<Type, List<ObserverPair>> _observers = new Dictionary<Type, List<ObserverPair>>();
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
+        private readonly SemaphoreSlim _semaphorePublish = new SemaphoreSlim(1, 1);
 
         public async Task Publish<TE>(TE value, CancellationToken cancellationToken = default)
         {
-            await _semaphore.WaitAsync();
+            await _semaphorePublish.WaitAsync();
             try
             {
                 if (_observers.ContainsKey(typeof(TE)))
@@ -32,7 +33,7 @@ namespace Observr
             }
             finally
             {
-                _semaphore.Release();
+                _semaphorePublish.Release();
             }
         }
 
