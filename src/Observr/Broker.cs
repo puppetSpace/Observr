@@ -15,13 +15,9 @@ namespace Observr
     {
         private readonly Dictionary<Type, List<ObserverPair>> _observers = new Dictionary<Type, List<ObserverPair>>();
         private readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
-        private readonly SemaphoreSlim _semaphorePublish = new SemaphoreSlim(1, 1);
 
         public async Task Publish<TE>(TE value, CancellationToken cancellationToken = default)
         {
-            await _semaphorePublish.WaitAsync();
-            try
-            {
                 if (_observers.ContainsKey(typeof(TE)))
                 {
                     foreach (var pair in _observers[typeof(TE)].ToList()) // run over list of list doesn't cause concurrency issues
@@ -30,11 +26,6 @@ namespace Observr
                         await observer.Handle(value, cancellationToken).ConfigureAwait(false);
                     }
                 }
-            }
-            finally
-            {
-                _semaphorePublish.Release();
-            }
         }
 
         public IDisposable Subscribe<TE>(IObserver<TE> observer)
